@@ -4,8 +4,12 @@ const morgan = require("morgan");
 const colors = require("colors");
 const cors = require("cors");
 const helmet = require("helmet");
+const mongoose = require("mongoose");
+const connectDB = require("./config/db");
+const errorHandler = require("./middlewares/error");
 
 //TODO: Route files
+const feesRouter = require("./routes/fees");
 
 // env
 dotenv.config();
@@ -29,8 +33,11 @@ app.use(
 	})
 );
 
+connectDB().then((db) => (exports.db = db));
+
 //TODO: Mount routers
+app.use("/fees", feesRouter);
 
 //TODO: error handling middleware
-
-module.exports = app;
+app.use(errorHandler);
+exports.app = app;
