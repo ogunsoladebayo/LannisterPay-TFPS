@@ -6,7 +6,6 @@ const fcsParser = (fcsString) => {
 	if (typeof fcsString !== "string" || validator.isEmpty(fcsString, { ignore_whitespace: true }))
 		throw new ErrorResponse("Fee configuration spec must be a string with valid characters!", 400);
 	const fcss = fcsString.split("\n");
-	// const data = [];
 	const feeCurrencyOptions = ["NGN", "*"];
 	const feeLocaleOptions = ["LOCL", "INTL", "*"];
 	const feeEntityOptions = ["CREDIT-CARD", "DEBIT-CARD", "BANK-ACCOUNT", "USSD", "WALLET-ID", "*"];
@@ -57,42 +56,56 @@ const fcsParser = (fcsString) => {
 		if (!validator.isIn(feeType, feeTypeOptions))
 			throw new ErrorResponse("One or more FEE-TYPE value(s) is not valid!", 400);
 		//validate FEE-VALUE
-		if (feeType === "FLAT_PERC") {
-			const [flatFee, percValue] = feeValue.split(":");
-			if (!flatFee || !validator.isDecimal(flatFee) || flatFee < 0)
-				throw new ErrorResponse(
-					"One or more FEE-VALUE value(s) is not valid for the specified FEE-TYPE value!",
-					400
-				);
-			if (!percValue || !validator.isDecimal(percValue) || percValue < 0)
-				throw new ErrorResponse(
-					"One or more PERC-VALUE value(s) is not valid for the specified FEE-TYPE value!",
-					400
-				);
-		} else {
-			if (!validator.isDecimal(feeValue) || feeValue < 0)
-				throw new ErrorResponse(
-					"One or more FEE-VALUE value(s) is not valid for the specified FEE-TYPE value!",
-					400
-				);
+		let flatCharge, percCharge;
+		switch (feeType) {
+			case "FLAT_PERC":
+				[flatCharge, percCharge] = feeValue.split(":");
+				if (!flatCharge || !validator.isDecimal(flatCharge) || flatCharge < 0)
+					throw new ErrorResponse(
+						"One or more FEE-VALUE value(s) is not valid for the specified FEE-TYPE value!",
+						400
+					);
+				if (!percCharge || !validator.isDecimal(percCharge) || percCharge < 0)
+					throw new ErrorResponse(
+						"One or more PERC-VALUE value(s) is not valid for the specified FEE-TYPE value!",
+						400
+					);
+				break;
+			case "FLAT":
+				if (!validator.isDecimal(feeValue) || feeValue < 0)
+					throw new ErrorResponse(
+						"One or more FEE-VALUE value(s) is not valid for the specified FEE-TYPE value!",
+						400
+					);
+				flatCharge = feeValue;
+				break;
+			case "PERC":
+				if (!validator.isDecimal(feeValue) || feeValue < 0)
+					throw new ErrorResponse(
+						"One or more FEE-VALUE value(s) is not valid for the specified FEE-TYPE value!",
+						400
+					);
+				percCharge = feeValue;
+				break;
+			default:
+				throw new ErrorResponse("One or more FEE-TYPE value(s) is not valid!", 400);
 		}
 
 		const parsedFcs = {
-			feeID,
-			feeCurrency,
-			feeLocale,
-			feeEntity,
-			entityProperty,
-			feeType,
-			flatValue: theFlatValue,
-			percValue: thePercValue,
-			feeValue: theSingleFeeValue
+			id: feeId,
+			currency: feeCurrency,
+			local: feeLocale,
+			entity: feeEntity,
+			entityProperty: entityProperty,
+			type: feeType,
+			flatCharge,
+			percCharge
 		};
 
 		result.push(parsedFcs);
 	});
 
-	return data;
+	return result;
 };
 
 module.exports = fcsParser;

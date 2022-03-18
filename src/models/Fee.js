@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { db } = require("../app");
 
 const FeeSchema = new mongoose.Schema({
 	id: { type: String, required: true, unique: true },
@@ -8,9 +7,11 @@ const FeeSchema = new mongoose.Schema({
 	entity: String,
 	entityProperty: String,
 	type: String,
-	value: String
+	flatCharge: Number,
+	percCharge: mongoose.Decimal128
 });
 
 FeeSchema.index({ locale: 1, entity: 1, entityProperty: 1 });
 
-module.exports = db.model("Fee", FeeSchema);
+const Fee = mongoose.model("Fee", FeeSchema);
+module.exports = Fee;

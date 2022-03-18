@@ -1,18 +1,21 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 const morgan = require("morgan");
 const colors = require("colors");
 const cors = require("cors");
 const helmet = require("helmet");
-const mongoose = require("mongoose");
-const connectDB = require("./config/db");
 const errorHandler = require("./middlewares/error");
-
-//TODO: Route files
-const feesRouter = require("./routes/fees");
+const connectDB = require("./config/db");
 
 // env
 dotenv.config();
+
+// DB connection
+connectDB();
+
+//TODO: Route files
+const feesRouter = require("./routes/fees");
 
 const app = express();
 
@@ -32,8 +35,6 @@ app.use(
 		extended: false
 	})
 );
-
-connectDB().then((db) => (exports.db = db));
 
 //TODO: Mount routers
 app.use("/fees", feesRouter);
