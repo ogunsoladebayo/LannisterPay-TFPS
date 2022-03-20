@@ -37,7 +37,7 @@ app.use(
 );
 
 //TODO: Mount routers
-app.use("/fees", feesRouter);
+app.use("/", feesRouter);
 
 //TODO: error handling middleware
 app.use(errorHandler);

@@ -6,7 +6,7 @@ const fcsParser = (fcsString) => {
 	if (typeof fcsString !== "string" || validator.isEmpty(fcsString, { ignore_whitespace: true }))
 		throw new ErrorResponse("Fee configuration spec must be a string with valid characters!", 400);
 	const fcss = fcsString.split("\n");
-	const feeCurrencyOptions = ["NGN", "*"];
+	const feeCurrencyOptions = ["NGN"];
 	const feeLocaleOptions = ["LOCL", "INTL", "*"];
 	const feeEntityOptions = ["CREDIT-CARD", "DEBIT-CARD", "BANK-ACCOUNT", "USSD", "WALLET-ID", "*"];
 	const feeTypeOptions = ["FLAT", "PERC", "FLAT_PERC"];
@@ -94,7 +94,7 @@ const fcsParser = (fcsString) => {
 		const parsedFcs = {
 			id: feeId,
 			currency: feeCurrency,
-			local: feeLocale,
+			locale: feeLocale,
 			entity: feeEntity,
 			entityProperty: entityProperty,
 			type: feeType,

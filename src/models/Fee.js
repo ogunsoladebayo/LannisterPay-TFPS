@@ -8,7 +8,7 @@ const FeeSchema = new mongoose.Schema({
 	entityProperty: String,
 	type: String,
 	flatCharge: Number,
-	percCharge: mongoose.Decimal128
+	percCharge: Number
 });
 
 FeeSchema.index({ locale: 1, entity: 1, entityProperty: 1 });
