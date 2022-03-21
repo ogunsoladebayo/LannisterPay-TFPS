@@ -27,15 +27,13 @@ Please be sure to have the following installed on your local machine before proc
 
 ### Installing
 
-    Install the dependencies by running command <code>npm install</code>  in the root directory of the project.
+-   Install the dependencies by running command <code>npm install</code> in the root directory of the project.
 
-Run on development mode with <code>npm run dev</code> in the root directory of the project
+-   Run on development mode with <code>npm run dev</code> in the root directory of the project
 
-or...
+    or...
 
-Run on production mode with <code>npm run prod</code> in the root directory of the project
-
-End with an example of getting some data out of the system or using it for a little demo.
+-   Run on production mode with <code>npm run prod</code> in the root directory of the project
 
 ## Usage <a name = "usage"></a>
 

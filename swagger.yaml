@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+    title: LannisterPayTFPS API
+    version: 1.0.0
+servers:
+    - url: https://lannisterpay-fcss.herokuapp.com
+paths:
+    /fees:
+        post:
+            tags:
+                - General
+            summary: /fees
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example:
+                                FeeConfigurationSpec: |-
+                                    LNPY1221 NGN * *(*) : APPLY PERC 1.4
+                                    LNPY1222 NGN INTL CREDIT-CARD(VISA) : APPLY PERC 5.0
+                                    LNPY1223 NGN LOCL CREDIT-CARD(*) : APPLY FLAT_PERC 50:1.4
+                                    LNPY1224 NGN * BANK-ACCOUNT(*) : APPLY FLAT 100
+                                    LNPY1225 NGN * USSD(MTN) : APPLY PERC 0.55
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /compute-transaction-fee:
+        post:
+            tags:
+                - General
+            summary: /compute-transaction-fee
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example:
+                                ID: 91203
+                                Amount: 5000
+                                Currency: NGN
+                                CurrencyCountry: NG
+                                Customer:
+                                    ID: 2211232
+                                    EmailAddress: anonimized29900@anon.io
+                                    FullName: Abel Eden
+                                    BearsFee: true
+                                PaymentEntity:
+                                    ID: 2203454
+                                    Issuer: GTBANK
+                                    Brand: MASTERCARD
+                                    Number: 530191******2903
+                                    SixID: 530191
+                                    Type: CREDIT-CARD
+                                    Country: NG
+            responses:
+                "200":
+                    description: OK
+                    headers:
+                        Server:
+                            schema:
+                                type: string
+                                example: Cowboy
+                        Connection:
+                            schema:
+                                type: string
+                                example: keep-alive
+                        Content-Security-Policy:
+                            schema:
+                                type: string
+                                example: >-
+                                    default-src 'self';base-uri
+                                    'self';block-all-mixed-content;font-src 'self' https:
+                                    data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                                    data:;object-src 'none';script-src 'self';script-src-attr
+                                    'none';style-src 'self' https:
+                                    'unsafe-inline';upgrade-insecure-requests
+                        Cross-Origin-Embedder-Policy:
+                            schema:
+                                type: string
+                                example: require-corp
+                        Cross-Origin-Opener-Policy:
+                            schema:
+                                type: string
+                                example: same-origin
+                        Cross-Origin-Resource-Policy:
+                            schema:
+                                type: string
+                                example: same-origin
+                        X-Dns-Prefetch-Control:
+                            schema:
+                                type: string
+                                example: "off"
+                        Expect-Ct:
+                            schema:
+                                type: string
+                                example: max-age=0
+                        X-Frame-Options:
+                            schema:
+                                type: string
+                                example: SAMEORIGIN
+                        Strict-Transport-Security:
+                            schema:
+                                type: string
+                                example: max-age=15552000; includeSubDomains
+                        X-Download-Options:
+                            schema:
+                                type: string
+                                example: noopen
+                        X-Content-Type-Options:
+                            schema:
+                                type: string
+                                example: nosniff
+                        Origin-Agent-Cluster:
+                            schema:
+                                type: string
+                                example: "?1"
+                        X-Permitted-Cross-Domain-Policies:
+                            schema:
+                                type: string
+                                example: none
+                        Referrer-Policy:
+                            schema:
+                                type: string
+                                example: no-referrer
+                        X-Xss-Protection:
+                            schema:
+                                type: integer
+                                example: "0"
+                        Access-Control-Allow-Origin:
+                            schema:
+                                type: string
+                                example: "*"
+                        Content-Type:
+                            schema:
+                                type: string
+                                example: application/json; charset=utf-8
+                        Content-Length:
+                            schema:
+                                type: integer
+                                example: "93"
+                        Etag:
+                            schema:
+                                type: string
+                                example: W/"5d-OitIwMLg2/kn8U6TdbE5quZCBgU"
+                        Date:
+                            schema:
+                                type: string
+                                example: Mon, 21 Mar 2022 00:21:17 GMT
+                        Via:
+                            schema:
+                                type: number
+                                example: 1.1 vegur
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                            example:
+                                AppliedFeeID: LNPY1223
+                                AppliedFeeValue: 120
+                                ChargeAmount: 5120
+                                SettlementAmount: 5000

@@ -7,6 +7,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const errorHandler = require("./middlewares/error");
 const connectDB = require("./config/db");
+const swaggerUi = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
 
 // env
 dotenv.config();
@@ -38,6 +40,22 @@ app.use(
 
 //TODO: Mount routers
 app.use("/", feesRouter);
+
+const options = {
+	swaggerDefinition: {
+		info: {
+			title: "LANNISTERPAY TFPS API",
+			version: "1.0.0",
+			description:
+				"A NGN (Nigerian Naira) fee processing service for a fictional Payment Processor (LannisterPay)"
+		},
+		openapi: "3.0.0"
+	},
+	apis: ["swagger.yaml"]
+};
+
+const specs = swaggerJSDoc(options);
+app.use("/", swaggerUi.serve, swaggerUi.setup(specs));
 
 //TODO: error handling middleware
 app.use(errorHandler);
